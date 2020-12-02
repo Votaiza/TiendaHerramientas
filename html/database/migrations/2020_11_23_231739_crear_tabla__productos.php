@@ -15,11 +15,13 @@ class CrearTablaProductos extends Migration
     {
         Schema::create('Productos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_Rubro')->constrained('Rubros');            
+            $table->foreignId('id_Rubro')->constrained('Rubros');
             $table->string('nombre');
+            $table->text('descripcion');
             $table->string('sku', 250 )->unique();
-	        $table->float('precio');
-            $table->integer('stock')->default(0);
+            $table->text('imagen');
+            $table->decimal('precio', 8, 2);
+            $table->integer('disponibilidad')->default(0);;
             $table->timestamps();
         });
     }

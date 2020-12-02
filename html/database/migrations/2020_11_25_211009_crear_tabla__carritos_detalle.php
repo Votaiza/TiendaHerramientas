@@ -18,7 +18,7 @@ class CrearTablaCarritosDetalle extends Migration
             $table->foreignId('id_Carritos')->constrained('Carritos');
             $table->foreignId('id_Productos')->constrained('Productos');
             $table->integer('cantidad');
-            $table->double('importe_Neto', 13, 2);
+            $table->decimal('importe', 13, 2);
             $table->timestamps();
         });
     }

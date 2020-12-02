@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use \App\Models\Producto;
-class SeederProductos extends Seeder
+
+class ProductoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class SeederProductos extends Seeder
      */
     public function run()
     {
-        Producto::factory(10)->create();
+        //
     }
 }
