@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\Rubro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -15,7 +17,13 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        $datos['productos'] = Producto::paginate(5);
+
+        $datos['productos'] = Producto::leftJoin('Rubros', 'Rubros.id', '=', 'Productos.id_Rubro')
+            ->select('Productos.*', 'Rubros.nombre as rubro')
+            ->paginate(5);
+
+        //Producto::paginate(5);
+
 
         return view('productos.index', $datos);
 
@@ -29,7 +37,9 @@ class ProductoController extends Controller
     public function create()
     {
         //
-        return view('productos.create');
+        $datosRubros['rubros'] = Rubro::all();
+
+        return view('productos.create', $datosRubros);
     }
 
     /**
@@ -50,7 +60,7 @@ class ProductoController extends Controller
 
         Producto::insert($datosProducto);
 
-        return response()->json($datosProducto);
+        return redirect('productos')->with('Mensaje', 'Producto Cargado');
     }
 
     /**
@@ -70,10 +80,21 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function edit(Producto $producto)
+    public function edit($id)
     {
         //
-        return view('productos.edit');
+        //$producto = Producto::findOrFail($id);
+        $producto = Producto::leftJoin('Rubros', 'Rubros.id', '=', 'Productos.id_Rubro')
+            ->select('Productos.*', 'Rubros.nombre as rubro')
+            ->findOrFail($id);
+        //dd($producto);
+        $datosRubro = Rubro::all();
+        //$rubroProducto = null;
+
+        return view('productos.edit', ['producto' => $producto, 'datosRubros' => $datosRubro]);
+
+        //'rubroProducto' => $rubroProducto,
+        //'datosRubros' => $datosRubro
     }
 
     /**
@@ -83,9 +104,24 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Producto $producto)
+    public function update(Request $request, $id)
     {
         //
+        $datosProducto = request()->except(['_token', '_method']);
+
+        if($request->hasFile('imagen')){
+
+            $producto = Producto::findOrFail($id);
+
+            Storage::delete('public/'.$producto->imagen);
+
+            $datosProducto['imagen']=$request->file('imagen')->store('uploads', 'public');
+        }
+
+        Producto::where('id','=',$id)->update($datosProducto);
+
+        return redirect('productos')->with('Mensaje', 'Producto actualizado');
+
     }
 
     /**
@@ -94,8 +130,15 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Producto $producto)
+    public function destroy($id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+
+        if(Storage::delete('public/'.$producto->imagen)){
+            Producto::destroy($id);
+        }
+
+        return redirect('productos')->with('Mensaje', 'Producto eliminado');
+
     }
 }
