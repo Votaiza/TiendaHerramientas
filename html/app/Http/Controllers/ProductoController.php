@@ -53,7 +53,9 @@ class ProductoController extends Controller
         //$datosProducto=request()->all();
 
         $datosProducto=request()->except('_token');
+        dd($datosProducto);
 
+        /*
         if($request->hasFile('imagen')){
             $datosProducto['imagen']=$request->file('imagen')->store('uploads', 'public');
         }
@@ -61,6 +63,7 @@ class ProductoController extends Controller
         Producto::insert($datosProducto);
 
         return redirect('productos')->with('Mensaje', 'Producto Cargado');
+        */
     }
 
     /**
@@ -85,13 +88,13 @@ class ProductoController extends Controller
         //
         //$producto = Producto::findOrFail($id);
         $producto = Producto::leftJoin('Rubros', 'Rubros.id', '=', 'Productos.id_Rubro')
-            ->select('Productos.*', 'Rubros.nombre as rubro')
-            ->findOrFail($id);
+                            ->select('Productos.*', 'Rubros.nombre as rubro')
+                            ->findOrFail($id);
         //dd($producto);
         $datosRubro = Rubro::all();
         //$rubroProducto = null;
 
-        return view('productos.edit', ['producto' => $producto, 'datosRubros' => $datosRubro]);
+        return view('productos.edit', ['producto' => $producto, 'rubros' => $datosRubro]);
 
         //'rubroProducto' => $rubroProducto,
         //'datosRubros' => $datosRubro

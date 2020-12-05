@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->text('profile_photo_path')->nullable();
             $table->boolean('rol');
             $table->timestamps();
+            $table->boolean('administrador')->default(0);
         });
     }
 

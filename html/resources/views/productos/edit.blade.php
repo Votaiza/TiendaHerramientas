@@ -3,7 +3,11 @@ Seccion para editar productos
     {{ csrf_field() }}
     {{method_field('PATCH')}}
 
-    <label for="id_Rubro">{{'id_Rubro'}}</label>
+    @include('productos.form', ['Modo' => 'edicion'])
+
+    {{--
+    /
+    <label for="id_Rubro">Rubro</label>
 
     <select name="id_Rubro" id="id_Rubro" >
 
@@ -17,35 +21,37 @@ Seccion para editar productos
     </select>
 
     <br>
-    <label for="nombre">{{'nombre'}}</label>
+    <label for="nombre">Nombre</label>
     <input type="text" name="nombre" id="nombre" value="{{ $producto->nombre }}">
 
     <br>
-    <label for="sku">{{'sku'}}</label>
+    <label for="sku">SKU</label>
     <input type="text" name="sku" id="sku" value="{{ $producto->sku }}">
 
     <br>
-    <label for="disponibilidad">{{'disponibilidad'}}</label>
+    <label for="disponibilidad">Disponibilidad</label>
     <input type="text" name="disponibilidad" id="disponibilidad" value="{{ $producto->disponibilidad }}">
 
     <br>
-    <label for="precio">{{'precio'}}</label>
+    <label for="precio">Precio</label>
     <input type="text" name="precio" id="precio" value="{{ $producto->precio }}">
 
     <br>
-    <label for="imagen">{{'imagen'}}</label>
-    <td><img src="{{asset('storage').'/'.$producto->imagen}}" alt="Imagen Producto" width="200"></td>
+    <label for="imagen">Imagen</label>
+    <img src="{{asset('storage').'/'.$producto->imagen}}" alt="Imagen Producto" width="200">
     <br>
     <input type="file" name="imagen" id="imagen" value="">
 
     <br>
-    <label for="descripcion">{{'descripcion'}}</label>
+    <label for="descripcion">Descripcion</label>
     <textarea name="descripcion" >{{ $producto->descripcion }}</textarea>
 
     <br>
     <input type="submit" value="Confirmar">
 
     <a href="{{url('/productos')}}">Cancelar</a>
+
+    --}}
 
 
 </form>
