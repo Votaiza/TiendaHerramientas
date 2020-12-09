@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('productos', 'ProductoController');
+Route::resource('productos', 'ProductoController')->middleware('auth');
 
 Route::resource('rubros', 'RubroController');
 

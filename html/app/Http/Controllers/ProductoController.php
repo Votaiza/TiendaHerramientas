@@ -50,12 +50,22 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //$datosProducto=request()->all();
+        $validacionCampos = [
+            'id_Rubro' => 'required|integer',
+            'nombre' => 'required|string|max:100',
+            'decripcion' => 'required|string|max:400',
+            'sku' => 'required',
+            'imagen' => 'required|max:10000|mimes:jpeg,png,jpg',
+            'precio' => 'required',
+            'disponibilidad' => 'required|integer',
+        ];
+
+        $Mensaje=["required"=>':attribute es requerido'];
+
+        $this->validate($request,$validacionCampos,$Mensaje);
 
         $datosProducto=request()->except('_token');
-        dd($datosProducto);
 
-        /*
         if($request->hasFile('imagen')){
             $datosProducto['imagen']=$request->file('imagen')->store('uploads', 'public');
         }
@@ -63,7 +73,6 @@ class ProductoController extends Controller
         Producto::insert($datosProducto);
 
         return redirect('productos')->with('Mensaje', 'Producto Cargado');
-        */
     }
 
     /**
@@ -110,6 +119,24 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validacionCampos = [
+            'id_Rubro' => 'required|integer',
+            'nombre' => 'required|string|max:100',
+            'decripcion' => 'required|string|max:400',
+            'sku' => 'required',
+            'precio' => 'required',
+            'disponibilidad' => 'required|integer',
+        ];
+
+        if($request->hasFile('imagen')){
+            $validacionCampos += ['imagen' => 'required|max:10000|mimes:jpeg,png,jpg'];
+
+        }
+
+        $Mensaje=["required"=>':attribute es requerido'];
+
+        $this->validate($request,$validacionCampos,$Mensaje);
+
         $datosProducto = request()->except(['_token', '_method']);
 
         if($request->hasFile('imagen')){
