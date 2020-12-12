@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Carrito;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
-class CarritoController extends Controller
+class TiendaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,13 @@ class CarritoController extends Controller
     public function index()
     {
         //
+
+        $datos['productos'] = Producto::leftJoin('Rubros', 'Rubros.id', '=', 'Productos.id_Rubro')
+            ->select('Productos.*', 'Rubros.nombre as rubro')
+            ->paginate(6);
+
+
+        return view('tienda.index', $datos);
     }
 
     /**
@@ -41,10 +48,10 @@ class CarritoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Carrito  $carrito
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Carrito $carrito)
+    public function show($id)
     {
         //
     }
@@ -52,10 +59,10 @@ class CarritoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Carrito  $carrito
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Carrito $carrito)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +71,10 @@ class CarritoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Carrito  $carrito
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Carrito $carrito)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +82,10 @@ class CarritoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Carrito  $carrito
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Carrito $carrito)
+    public function destroy($id)
     {
         //
     }

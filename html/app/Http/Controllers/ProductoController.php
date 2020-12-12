@@ -20,7 +20,7 @@ class ProductoController extends Controller
 
         $datos['productos'] = Producto::leftJoin('Rubros', 'Rubros.id', '=', 'Productos.id_Rubro')
             ->select('Productos.*', 'Rubros.nombre as rubro')
-            ->paginate(5);
+            ->Paginate(5);
 
         //Producto::paginate(5);
 

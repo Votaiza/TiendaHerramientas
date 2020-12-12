@@ -52,6 +52,8 @@
                 @endforeach
             </tbody>
         </table>
+
+        {{$productos->links()}}
     </div>
 
 @endsection

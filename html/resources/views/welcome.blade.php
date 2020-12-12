@@ -21,8 +21,9 @@
         </style>
     </head>
     <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
-            @if (Route::has('login'))
+            <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
                         <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
@@ -34,8 +35,12 @@
                         @endif
                     @endauth
                 </div>
-            @endif;
+                @endif;
+            </nav>
 
-        </div>
+
+            </div>
+
+
     </body>
 </html>

@@ -68,7 +68,7 @@
 
             <div class="form-group">
                 <label for="Imagen" class="control-label">Imagen</label>
-                <input type="file" class="form-control {{$errors->has('precio')?'is-invalid':''}}" id="imagen" name="imagen" value="">
+                <input type="file" class="form-control {{$errors->has('imagen')?'is-invalid':''}}" id="imagen" name="imagen" value="">
             </div>
 
             <div class="form-group">
