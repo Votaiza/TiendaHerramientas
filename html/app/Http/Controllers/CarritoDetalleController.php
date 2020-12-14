@@ -18,15 +18,27 @@ class CarritoDetalleController extends Controller
     public function index()
     {
         //
-        $datos['productos'] = CarritoDetalle::leftJoin('Productos', 'Productos.id', '=', 'CarritosDetalle.id_Productos')
-                                            ->paginate(0);
+        $user = Auth::user();
+        $carrito = Carrito::where('user_id', $user->id)->where('estado', 'A')->first();
 
-        //->select('CarritosDetalle.*', 'Productos.nombre as producto')
-        //Producto::paginate(5);
+        $productos['productos'] = CarritoDetalle::where('id_Carritos', $carrito->id)
+                                                ->leftJoin('Productos', 'Productos.id', '=', 'CarritosDetalle.id_Productos')
+                                                ->paginate(0);
 
-        //dd($datos);
+        $mensaje = 'No se agrego ningun articulo';
 
-        return view('carrito.index', $datos);
+        if($carrito == null){
+
+            $this->newCart($user->id);
+
+            $carrito = Carrito::where('user_id', $user->id)->where('estado', 'A')->first();
+
+        }
+
+
+        return view('carrito.index', $productos)->with('carrito', $carrito)->with('mensaje', $mensaje);
+
+
     }
 
     /**
@@ -40,29 +52,39 @@ class CarritoDetalleController extends Controller
 
     }
 
+    public function newCart($id){
+
+        $carrito = [
+            'user_id' => $id,
+            'precio_total' => 0,
+            'estado' => 'A',
+        ];
+
+        Carrito::insert($carrito);
+
+        return $carrito;
+    }
+
     public function addCart($id)
     {
         $producto = Producto::findOrFail($id);
         $user = Auth::user();
         $carritoUsuario = Carrito::where('user_id', $user->id)->where('estado', 'A')->first();
-        $productoCarrito = CarritoDetalle::where('id_Carritos', $carritoUsuario->id)
-                                         ->where('id_Productos', $id)
-                                         ->first();
-
-        if($carritoUsuario->count() == 0){
+        //$carritoUsuario = carrito::findOrFail($id, 'carrito->estad'=='A');
 
 
-            $carrito = [
-                'user_id' => $user->id,
-                'precio_total' => 0,
-                'estado' => 'A',
-            ];
-
-            Carrito::insert($carrito);
+        if($carritoUsuario == null){
+            $this->newCart($user->id);
 
             $carritoUsuario = Carrito::where('user_id', $user->id)->where('estado', 'A')->first();
 
         }
+        //dd($carritoUsuario);
+
+        $productoCarrito = CarritoDetalle::where('id_Carritos', $carritoUsuario->id)
+                                         ->where('id_Productos', $id)
+                                         ->first();
+
 
         if($productoCarrito == null){
 
@@ -146,8 +168,45 @@ class CarritoDetalleController extends Controller
      * @param  \App\Models\CarritoDetalle  $carritoDetalle
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CarritoDetalle $carritoDetalle)
+    public function destroy($id)
     {
         //
+
+        dd($id);
+        /*
+        $producto = CarritoDetalle::findOrFail($id);
+
+        $producto->delete();
+
+        return back();
+        */
+
+    }
+
+    public function confirmarCompra($id)
+    {
+
+        $carrito = Carrito::findOrFail($id);
+        $carritoDetalle = CarritoDetalle::where('id_Carritos', $id);
+
+        $carrito->estado = "C";
+        $carrito->save();
+
+        foreach ($carritoDetalle as $detalle) {
+            $this->actualizarStock($detalle->id_Productos, $detalle->cantidad);
+        }
+
+        $datos['productos'] = Producto::paginate(8);
+
+        return view('tienda.index', $datos);
+    }
+
+    public function actualizarStock($id, $cantidad){
+        $producto = Producto::findOrFail($id);
+
+        $producto->disponibilidad -= $cantidad;
+
+        $producto->save();
+
     }
 }

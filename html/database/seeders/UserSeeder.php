@@ -18,10 +18,17 @@ class UserSeeder extends Seeder
     {
         //
         DB::table('users')->insert([
-            'name' => 'root',
-            'email' => Str::random(10).'@gmail.com',
-            'password' => Hash::make('password'),
+            'name' => 'administrador',
+            'email' => 'prueba@gmail.com',
+            'password' => bcrypt('administrador'),
             'administrador' => 1,
-        ])
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'cliente',
+            'email' => 'cliente@gmail.com',
+            'password' => bcrypt('cliente'),
+            'administrador' => 0,
+        ]);
     }
 }

@@ -165,7 +165,7 @@ class ProductoController extends Controller
         $producto = Producto::findOrFail($id);
 
         if(Storage::delete('public/'.$producto->imagen)){
-            Producto::destroy($id);
+            Producto::destroy();
         }
 
         return redirect('productos')->with('Mensaje', 'Producto eliminado');

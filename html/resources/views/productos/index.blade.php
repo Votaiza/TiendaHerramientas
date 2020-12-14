@@ -53,7 +53,12 @@
             </tbody>
         </table>
 
-        {{$productos->links()}}
+        <div class="mt-5 ml-25">
+            {{$productos->links()}}
+        </div>
+
+
+
     </div>
 
 @endsection

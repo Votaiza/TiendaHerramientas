@@ -38,6 +38,8 @@ Route::resource('carrito', 'CarritoDetalleController');
 
 Route::get('carrito-addCart/{id}', 'CarritoDetalleController@addCart')->name('carrito-addCart');
 
+Route::get('carrito-confirmar/{id}', 'CarritoDetalleController@confirmarCompra')->name('confirmarCompra');
+
 Auth::routes();
 
 //Route::get('/home', 'TiendaController@index')->name('home');

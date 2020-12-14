@@ -18,7 +18,7 @@ class TiendaController extends Controller
 
         $datos['productos'] = Producto::leftJoin('Rubros', 'Rubros.id', '=', 'Productos.id_Rubro')
             ->select('Productos.*', 'Rubros.nombre as rubro')
-            ->paginate(6);
+            ->paginate(5);
 
 
         return view('tienda.index', $datos);
