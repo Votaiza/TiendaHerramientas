@@ -21,10 +21,6 @@ class CarritoDetalleController extends Controller
         $user = Auth::user();
         $carrito = Carrito::where('user_id', $user->id)->where('estado', 'A')->first();
 
-        $productos['productos'] = CarritoDetalle::where('id_Carritos', $carrito->id)
-                                                ->leftJoin('Productos', 'Productos.id', '=', 'CarritosDetalle.id_Productos')
-                                                ->paginate(0);
-
         $mensaje = 'No se agrego ningun articulo';
 
         if($carrito == null){
@@ -35,6 +31,9 @@ class CarritoDetalleController extends Controller
 
         }
 
+        $productos['productos'] = CarritoDetalle::where('id_Carritos', $carrito->id)
+                                                ->leftJoin('Productos', 'Productos.id', '=', 'CarritosDetalle.id_Productos')
+                                                ->paginate(0);
 
         return view('carrito.index', $productos)->with('carrito', $carrito)->with('mensaje', $mensaje);
 

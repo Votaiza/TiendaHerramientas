@@ -8,8 +8,7 @@
         @endif
 
 
-        <a href="{{url('/productos/create')}}" class="btn btn-dark">Cargar Producto</a>
-        <a href="{{url('/rubros/create')}}" class="btn btn-dark">Cargar Rubro</a>
+        <a href="{{url('/productos/create')}}" class="btn btn-dark mb-2">Cargar Producto</a>
         <table class="table table-hover">
             <thead>
                 <tr>
